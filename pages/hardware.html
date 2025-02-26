@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script defer src="../assets/script.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Hardware</h1>
+    <button onclick="window.history.back()">Voltar</button>
+    
+    <div id="hardware" class="section">
+        <div class="form-group">
+            <label for="ciNaoEncontrado" style="display: inline-flex; align-items: center;">
+              <input type="checkbox" id="ciNaoEncontrado" onclick="toggleCINaoEncontrado()" style="margin-right: 5px;">CI não encontrado
+            </label>
+        </div>
+      <div id="ciNaoEncontradoFields" style="display: none;">
+        <div class="form-group">
+          <label for="modelo">Modelo:</label>
+          <input type="text" id="modelo" placeholder="Informe o modelo">
+        </div>
+        <div class="form-group">
+          <label for="marca">Marca:</label>
+          <input type="text" id="marca" placeholder="Informe a marca">
+        </div>
+        <div class="form-group">
+          <label for="sn">S/N:</label>
+          <input type="text" id="sn" placeholder="Informe o número de série (S/N)">
+        </div>
+        <div class="form-group">
+          <label for="tag">Tag:</label>
+          <input type="text" id="tag" placeholder="Informe a tag">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="localizacaoEquipamento">Localização do Equipamento:</label>
+        <input type="text" id="localizacaoEquipamento" placeholder="Informe a localização, ex: peixaria, charcutaria, padaria, etc.">
+      </div>
+    </div>
+    
+    <button class="botao-copiar" id="copy-hardware" onclick="copyDataHardware()">Copiar Dados Hardware</button>
+  </div>
+  
+  <script>
+    // Função para alternar a exibição dos campos de CI não encontrado
+    function toggleCINaoEncontrado() {
+      const checkbox = document.getElementById("ciNaoEncontrado");
+      const fields = document.getElementById("ciNaoEncontradoFields");
+      fields.style.display = checkbox.checked ? "block" : "none";
+    }
+    
+    // Função para copiar os dados preenchidos da seção Hardware
+    function copyDataHardware() {
+      let output = "Seção: Hardware\n\n";
+      
+      // Se o checkbox estiver marcado, copia os dados dos campos de CI, se preenchidos
+      const ciCheckbox = document.getElementById("ciNaoEncontrado");
+      if (ciCheckbox.checked) {
+        let ciOutput = "CI não encontrado:\n";
+        const modelo = document.getElementById("modelo").value.trim();
+        if (modelo !== "") {
+          ciOutput += "Modelo: " + modelo + "\n";
+        }
+        const marca = document.getElementById("marca").value.trim();
+        if (marca !== "") {
+          ciOutput += "Marca: " + marca + "\n";
+        }
+        const sn = document.getElementById("sn").value.trim();
+        if (sn !== "") {
+          ciOutput += "S/N: " + sn + "\n";
+        }
+        const tag = document.getElementById("tag").value.trim();
+        if (tag !== "") {
+          ciOutput += "Tag: " + tag + "\n";
+        }
+        if (ciOutput.trim() !== "CI não encontrado:") {
+          output += ciOutput + "\n";
+        }
+      }
+      
+      // Copia o campo de localização do equipamento, se preenchido
+      const localizacao = document.getElementById("localizacaoEquipamento").value.trim();
+      if (localizacao !== "") {
+        output += "Localização do Equipamento: " + localizacao + "\n";
+      }
+      
+      // Se nenhum dado foi preenchido, não copia e exibe um alerta
+      if (output.trim() === "Seção: Hardware") {
+        alert("Nenhum dado foi preenchido!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Dados de Hardware copiados com sucesso!"))
+        .catch(err => console.error("Erro ao copiar os dados: ", err));
+    }
+  </script>
+</body>
+</html>

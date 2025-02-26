@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script defer src="../assets/script.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Software</h1>
+    <button onclick="window.history.back()">Voltar</button>
+    
+    <div id="software" class="section">
+      <div class="form-group">
+        <label for="mensagemErro">Mensagem de erro:</label>
+        <textarea id="mensagemErro" placeholder="Descrever erro que aparece no ecrã"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="nomeSistema">Nome do sistema:</label>
+        <input type="text" id="nomeSistema" placeholder="Inserir nome do sistema: ISSWEB, ISSXXI, SAP, etc">
+      </div>
+
+      <div class="form-group">
+        <label for="dataHoraOcorrencia">Data e hora da ocorrência:</label>
+        <input type="datetime-local" id="dataHoraOcorrencia">
+      </div>
+
+      <div class="form-group">
+        <label for="Ihostname">Hostname:</label>
+        <input type="text" id="Ihostname" placeholder="Informe hostname, para tickets segunda linha">
+      </div>
+    </div>
+    
+    <button class="botao-copiar" id="copy-software" onclick="copyDataSoftware()">Copiar Dados Software</button>
+  </div>
+  
+  <script>
+    function copyDataSoftware() {
+      let output = "";
+      
+      // Copia apenas se os campos estiverem preenchidos
+      const mensagemErro = document.getElementById("mensagemErro").value.trim();
+      if (mensagemErro !== "") {
+        output += "Mensagem de erro: " + mensagemErro + "\n";
+      }
+      
+      const nomeSistema = document.getElementById("nomeSistema").value.trim();
+      if (nomeSistema !== "") {
+        output += "Nome do sistema: " + nomeSistema + "\n";
+      }
+      
+      const dataHora = document.getElementById("dataHoraOcorrencia").value.trim();
+      if (dataHora !== "") {
+        output += "Data e hora da ocorrência: " + dataHora + "\n";
+      }
+      
+      const hostname = document.getElementById("Ihostname").value.trim();
+      if (hostname !== "") {
+        output += "Hostname: " + hostname + "\n";
+      }
+      
+      // Se nenhum dado foi preenchido, exibe alerta
+      if (output.trim() === "Seção: Software") {
+        alert("Nenhum dado foi preenchido!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Dados de Software copiados com sucesso!"))
+        .catch(err => console.error("Erro ao copiar os dados: ", err));
+    }
+  </script>
+</body>
+</html>

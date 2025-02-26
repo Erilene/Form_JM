@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GASODATA</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script defer src="../assets/script.js"></script>
+  <style>
+    /* Aumenta o espaçamento entre cada .form-group */
+    .form-group {
+      margin-bottom: 25px; /* ajuste conforme desejar */
+    }
+    
+    /* Faz com que cada label seja exibido em linha (inclusive o texto do checkbox) */
+    .form-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px; /* espaço entre o checkbox e o texto */
+    }
+
+    /* Dá mais espaço apenas entre os labels de checkboxes subsequentes (não afeta o primeiro label, que é a pergunta) */
+    .form-group label + label {
+      margin-left: 0px; /* ajuste conforme desejar */
+    }
+
+    /* Opcional: deixa o label principal (a pergunta) em bloco para separar visualmente */
+    .form-group label:first-child {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px; /* espaço abaixo do texto da pergunta */
+      gap: 0;            /* remove o gap que não é necessário aqui */
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>GASODATA</h1>
+    <button onclick="window.history.back()">Voltar</button>
+    
+    <div id="gasodata" class="section">
+
+      <!-- Exemplo de pergunta com checkboxes -->
+      <div class="form-group">
+        <label>Verificar condições elétricas do posto ou loja:</label>
+        <label><input type="checkbox" id="quedaEnergia">Houve queda de energia e voltou.</label>
+        <label><input type="checkbox" id="energiaBaixa">Energia está em abaixa.</label>
+        <label><input type="checkbox" id="semQuedaEnergia">Não houve queda de energia.</label>
+      </div>
+      
+      <div class="form-group">
+        <label>O posto está debilitado ou impedido de vender?</label>
+        <label><input type="radio" name="venda" value="Sim"> Sim</label>
+        <label><input type="radio" name="venda" value="Não"> Não</label>
+        <input type="text" id="vendaP" placeholder="Pode vender a dinheiro, mas não a MB e vice-versa, não consegue descontar saldo PM, etc.">
+      </div>
+      
+      <div class="form-group">
+        <label>Consegue rebater saldo do cartão poupa mais?</label>
+        <label><input type="radio" name="descontoPM" value="Sim"> Sim</label>
+        <label><input type="radio" name="descontoPM" value="Não"> Não</label>
+      </div>
+      
+      <div class="form-group">
+        <label>Se não consegue rebater vales BP, informa data de validade do vale:</label>
+        <textarea id="validadeValeBP" placeholder="(Quando aplicável)"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>O posto irá ficar debilitado ou impedido de vender no período nocturno?</label>
+        <label><input type="radio" name="periodoNoturno" value="Sim"> Sim</label>
+        <label><input type="radio" name="periodoNoturno" value="Não"> Não</label>
+      </div>
+      
+      <div class="form-group">
+        <label>Há alternativa de trabalho? (Questão obrigatória)</label>
+        <input type="text" id="alternativa" placeholder="2ª Cabine/OPT AUTO">
+      </div>
+      
+      <div class="form-group">
+        <label for="troubleshoot">INDICAÇÃO DE TROUBLESHOOT:</label>
+        <textarea id="troubleshoot" placeholder="Conseguimos fazer alguma coisa? Reiniciámos os equipamentos?"></textarea>
+      </div>
+    </div>
+    
+    <button class="botao-copiar" id="copy-gasodata" onclick="copyDataGasodata()">Copiar Dados GASODATA</button>
+  </div>
+  
+  <script>
+    function copyDataGasodata() {
+      let output = "Seção: GASODATA\n\n";
+      
+      // Exemplo de coleta de checkboxes
+      let condicoes = [];
+      if (document.getElementById("quedaEnergia").checked) {
+        condicoes.push("Houve queda de energia e voltou.");
+      }
+      if (document.getElementById("energiaBaixa").checked) {
+        condicoes.push("Energia está em abaixa.");
+      }
+      if (document.getElementById("semQuedaEnergia").checked) {
+        condicoes.push("Não houve queda de energia.");
+      }
+      if (condicoes.length > 0) {
+        output += "Condições elétricas: " + condicoes.join(" ") + "\n";
+      }
+      
+      // Posto debilitado ou impedido de vender (radio e campo adicional)
+      let vendaRadio = document.querySelector('input[name="venda"]:checked');
+      if (vendaRadio) {
+        output += "O posto está debilitado ou impedido de vender? " + vendaRadio.value + "\n";
+      }
+      const vendaP = document.getElementById("vendaP").value.trim();
+      if (vendaP !== "") {
+        output += "Observação sobre venda: " + vendaP + "\n";
+      }
+      
+      // Rebater saldo do cartão poupa mais (radio)
+      let descontoRadio = document.querySelector('input[name="descontoPM"]:checked');
+      if (descontoRadio) {
+        output += "Consegue rebater saldo do cartão poupa mais? " + descontoRadio.value + "\n";
+      }
+      
+      // Validade do vale BP
+      const validadeBP = document.getElementById("validadeValeBP").value.trim();
+      if (validadeBP !== "") {
+        output += "Data de validade do vale BP: " + validadeBP + "\n";
+      }
+      
+      // Período nocturno (radio)
+      let periodoRadio = document.querySelector('input[name="periodoNoturno"]:checked');
+      if (periodoRadio) {
+        output += "O posto irá ficar debilitado no período nocturno? " + periodoRadio.value + "\n";
+      }
+      
+      // Alternativa de trabalho
+      const alternativa = document.getElementById("alternativa").value.trim();
+      if (alternativa !== "") {
+        output += "Alternativa de trabalho: " + alternativa + "\n";
+      }
+      
+      // Indicação de troubleshoot
+      const troubleshoot = document.getElementById("troubleshoot").value.trim();
+      if (troubleshoot !== "") {
+        output += "INDICAÇÃO DE TROUBLESHOOT: " + troubleshoot + "\n";
+      }
+      
+      if (output.trim() === "Seção: GASODATA") {
+        alert("Nenhum dado foi preenchido!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Dados de GASODATA copiados com sucesso!"))
+        .catch(err => console.error("Erro ao copiar os dados: ", err));
+    }
+  </script>
+</body>
+</html>

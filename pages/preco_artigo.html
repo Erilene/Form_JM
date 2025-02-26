@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preço de Artigo</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/script.js"></script>
+    <style>
+        .hidden { display: none; }
+        .artigo-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .artigo-field {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Preço de Artigo</h1>
+        <button onclick="window.history.back()">Voltar</button>
+        
+        <h2>Escolha uma Opção</h2>
+        <button class="botao-copiar" onclick="showSection('balanca')">Balança</button>
+        <button class="botao-copiar" onclick="showSection('frente_loja')">Frente de Loja</button>
+        <button class="botao-copiar" onclick="showSection('issetiq')">ISSETIQ</button>
+        
+        <!-- Balança -->
+        <div id="balanca" class="form-group hidden">
+            <h2>Balança</h2>
+            <h3>Preencha os detalhes dos artigos</h3>
+            <div id="balanca-articles">
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="plu1" placeholder="PLU 1">
+                    <input class="artigo-field" type="text" id="nome_artigo1" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar1" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto1" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="plu2" placeholder="PLU 2">
+                    <input class="artigo-field" type="text" id="nome_artigo2" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar2" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto2" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="plu3" placeholder="PLU 3">
+                    <input class="artigo-field" type="text" id="nome_artigo3" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar3" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto3" placeholder="Preço correto">
+                </div>
+            </div>
+            
+            <h3>Perguntas</h3>
+            <label>Artigo faz preço correto em SAP?</label>
+            <select id="sap_balanca" onchange="validateStep(this, 'sortidos_balanca', 'Loja deve contactar SAL')">
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            <div id="sortidos_balanca" class="hidden">
+                <label>Artigo faz parte dos Sortidos?</label>
+                <select id="sortidos_balanca_select" onchange="validateStep(this, 'issweb_balanca', 'Loja deve contactar SAL')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div id="issweb_balanca" class="hidden">
+                <label>Verificado preço em Issweb?</label>
+                <select id="issweb_balanca_select" onchange="validateStep(this, 'mapeamento_balanca', 'Verifique o preço em ISSWEB para continuar')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div id="mapeamento_balanca" class="hidden">
+                <label>Validado mapeamento X ?</label>
+                <select id="mapeamento_balanca_select" onchange="validateStep(this, 'mapeamento_balanca', 'Verifique o mapeamento X')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <button class="botao-copiar" id="copy-balanca" onclick="copyDataBalanca()">Copiar Dados</button>
+        </div>
+        
+        <!-- Frente de Loja -->
+        <div id="frente_loja" class="form-group hidden">
+            <h2>Frente de Loja</h2>
+            <h3>Preencha os detalhes dos artigos</h3>
+            <div id="frente-loja-articles">
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="ean1" placeholder="EAN 1">
+                    <input class="artigo-field" type="text" id="nome_artigo1" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar1" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto1" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="ean2" placeholder="EAN 1">
+                    <input class="artigo-field" type="text" id="nome_artigo2" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar2" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto2" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="ean3" placeholder="EAN 3">
+                    <input class="artigo-field" type="text" id="nome_artigo3" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar3" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto3" placeholder="Preço correto">
+                </div>
+            </div>
+            <h3>Perguntas</h3>
+            <label>Artigo faz preço correto em SAP?</label>
+            <select id="sap_frente_loja_select" onchange="validateStep(this, 'sortidos_frente_loja', 'Loja deve contactar SAL')">
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            
+            <div id="sortidos_frente_loja" class="hidden">
+                <label>Artigo faz parte dos Sortidos?</label>
+                <select id="sortidos_frente_loja_select" onchange="validateStep(this, 'issweb_frente_loja', 'Loja deve contactar SAL')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            
+            <div id="issweb_frente_loja" class="hidden">
+                <label>Verificado preço em Issweb?</label>
+                <select id="issweb_frente_loja_select" onchange="validateStep(this, 'mapeamento_frente_loja', 'Verifique o preço em ISSWEB para continuar')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            
+            <div id="mapeamento_frente_loja" class="hidden">
+                <label>Validado mapeamento X?</label>
+                <select id="mapeamento_frente_loja_select" onchange="validateStep(this, 'mapeamento_frente_loja', 'Verifique o mapeamento X')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            
+            <button class="botao-copiar" id="copy-frente_loja" onclick="copyDataFrenteLoja()">Copiar Dados</button>
+        </div>
+
+        <!-- ISSETIQ -->
+        <div id="issetiq" class="form-group hidden">
+            <h2>ISSETIQ</h2>
+            <h3>Preencha os detalhes dos artigos</h3>
+            <div id="issetiq_articles">
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="Cod_interno1" placeholder="Cód. interno 1">
+                    <input class="artigo-field" type="text" id="nome_artigo1" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar1" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto1" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="Cod_interno2" placeholder="Cód. interno 2">
+                    <input class="artigo-field" type="text" id="nome_artigo2" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar2" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto2" placeholder="Preço correto">
+                </div>
+                <div class="artigo-row">
+                    <input class="artigo-field" type="text" id="Cod_interno3" placeholder="Cód. interno 3">
+                    <input class="artigo-field" type="text" id="nome_artigo3" placeholder="Nome do artigo">
+                    <input class="artigo-field" type="text" id="preco_passar3" placeholder="Preço a passar">
+                    <input class="artigo-field" type="text" id="preco_correto3" placeholder="Preço correto">
+                </div>
+            </div>
+            
+            <h3>Perguntas</h3>
+            <label>Artigo faz preço correto em SAP?</label>
+            <select id="sap_issetiq" onchange="validateStep(this, 'sortidos_issetiq', 'Loja deve contactar SAL')">
+                <option value="">Selecione</option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            <div id="sortidos_issetiq" class="hidden">
+                <label>Artigo faz parte dos Sortidos?</label>
+                <select id="sortidos_issetiq_select" onchange="validateStep(this, 'mapeamento_issetiq', 'Loja deve contactar SAL')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div id="mapeamento_issetiq" class="hidden">
+                <label>Validado mapeamento X ?</label>
+                <select id="mapeamento_issetiq_select" onchange="validateStep(this, 'ficheiros_issetiq', 'Verifique o preço em ISSWEB para continuar')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div id="ficheiros_issetiq" class="hidden">
+                <label>Verificado se ficheiros foram importados em X:\ISS\WORK?</label>
+                <select id="ficheiros_issetiq_select" onchange="validateStep(this, 'ficheiros_issetiq', 'Verifique o mapeamento X')">
+                    <option value="">Selecione</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <button class="botao-copiar" id="copy-issetiq" onclick="copyDataIssetiq()">Copiar Dados</button>
+        </div>
+    </div>
+    <script>
+        function copyDataBalanca() {
+        const container = document.getElementById("balanca");
+        let output = "";
+
+        // Copia as informações dos artigos, apenas se os inputs tiverem valor
+        const articlesContainer = document.getElementById("balanca-articles");
+        const articleRows = articlesContainer.querySelectorAll(".artigo-row");
+        articleRows.forEach((row, index) => {
+            let articleOutput = "";
+            row.querySelectorAll("input").forEach(input => {
+            if (input.value.trim() !== "") {  // verifica se o campo foi preenchido
+                let label = input.placeholder.replace(/:/g, "").trim();
+                articleOutput += label + " " + input.value + "\n";
+            }
+            });
+            if (articleOutput !== "") { // adiciona o artigo somente se houver informações
+            output += "Artigo " + (index + 1) + ":\n" + articleOutput + "\n";
+            }
+        });
+
+        // Copia as perguntas somente se foram respondidas
+        output += "";
+        container.querySelectorAll("label").forEach(label => {
+            let text = label.innerText.replace(/:/g, "").trim();
+            let selectElem = label.nextElementSibling;
+            if (selectElem && selectElem.tagName.toLowerCase() === "select" && selectElem.value.trim() !== "") {
+            output += text + " " + selectElem.value + "\n";
+            }
+        });
+
+        navigator.clipboard.writeText(output)
+            .then(() => alert("Dados de Balança copiados com sucesso!"))
+            .catch(err => console.error("Erro ao copiar os dados: ", err));
+        }
+
+        function copyDataFrenteLoja() {
+        const container = document.getElementById("frente_loja");
+        let output = "";
+
+        // Copia as informações dos artigos
+        const articlesContainer = document.getElementById("frente-loja-articles");
+        const articleRows = articlesContainer.querySelectorAll(".artigo-row");
+        articleRows.forEach((row, index) => {
+            let articleOutput = "";
+            row.querySelectorAll("input").forEach(input => {
+            if (input.value.trim() !== "") {
+                let label = input.placeholder.replace(/:/g, "").trim();
+                articleOutput += label + " " + input.value + "\n";
+            }
+            });
+            if (articleOutput !== "") {
+            output += "Artigo " + (index + 1) + ":\n" + articleOutput + "\n";
+            }
+        });
+
+        // Copia as perguntas
+        output += "";
+        container.querySelectorAll("label").forEach(label => {
+            let text = label.innerText.replace(/:/g, "").trim();
+            let selectElem = label.nextElementSibling;
+            if (selectElem && selectElem.tagName.toLowerCase() === "select" && selectElem.value.trim() !== "") {
+            output += text + " " + selectElem.value + "\n";
+            }
+        });
+
+        navigator.clipboard.writeText(output)
+            .then(() => alert("Dados de Frente de Loja copiados com sucesso!"))
+            .catch(err => console.error("Erro ao copiar os dados: ", err));
+        }
+
+        function copyDataIssetiq() {
+        const container = document.getElementById("issetiq");
+        let output = "";
+
+        // Copia as informações dos artigos
+        const articlesContainer = document.getElementById("issetiq_articles");
+        const articleRows = articlesContainer.querySelectorAll(".artigo-row");
+        articleRows.forEach((row, index) => {
+            let articleOutput = "";
+            row.querySelectorAll("input").forEach(input => {
+            if (input.value.trim() !== "") {
+                let label = input.placeholder.replace(/:/g, "").trim();
+                articleOutput += label + " " + input.value + "\n";
+            }
+            });
+            if (articleOutput !== "") {
+            output += "Artigo " + (index + 1) + ":\n" + articleOutput + "\n";
+            }
+        });
+
+        // Copia as perguntas
+        output += "";
+        container.querySelectorAll("label").forEach(label => {
+            let text = label.innerText.replace(/:/g, "").trim();
+            let selectElem = label.nextElementSibling;
+            if (selectElem && selectElem.tagName.toLowerCase() === "select" && selectElem.value.trim() !== "") {
+            output += text + " " + selectElem.value + "\n";
+            }
+        });
+
+        navigator.clipboard.writeText(output)
+            .then(() => alert("Dados de ISSETIQ copiados com sucesso!"))
+            .catch(err => console.error("Erro ao copiar os dados: ", err));
+        }
+
+  </script>
+</body>
+</html>

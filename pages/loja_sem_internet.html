@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loja sem Internet - Condições Elétricas</title>
+
+  <!-- SEU CSS PADRÃO -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <!-- SEU SCRIPT PADRÃO -->
+  <script defer src="../assets/script.js"></script>
+
+  <style>
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .titulo-pergunta {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    /* Contêiner em coluna para cada label (uma opção por linha) */
+    .opcoes-coluna {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px; /* espaço vertical entre cada opção */
+    }
+    /* Cada label (checkbox + texto) lado a lado */
+    .opcoes-coluna label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px; /* espaço entre o checkbox e o texto */
+      white-space: nowrap; /* evita quebra de linha dentro da label */
+    }
+
+    /* Mensagens em vermelho (sem piscar) */
+    #baixaMessage, 
+    #bastidorMessage {
+      font-size: 1.5em;
+      display: none;
+      color: yellow;
+      font-weight: bold;
+      margin-top: 10px;
+      white-space: pre-wrap; /* preserva quebras de linha */
+    }
+
+    /* Pergunta do bastidor oculta inicialmente */
+    #bastidorQuestion {
+      display: none; /* Importante: começa oculta */
+      margin-bottom: 20px;
+    }
+
+    /* Radios próximos do texto */
+    #bastidorQuestion .opcoes-bastidor label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Loja sem Internet - Condições Elétricas</h1>
+
+    <!-- Botão Voltar, seguindo o padrão -->
+    <button onclick="window.history.back()">Voltar</button>
+
+    <!-- Grupo principal da pergunta -->
+    <div class="form-group">
+      <div class="titulo-pergunta">
+        Verificar condições elétricas do posto ou loja:
+      </div>
+      <div class="opcoes-coluna">
+        <label>
+          <input type="checkbox" id="chkQueda" onclick="handleCondicoes()" />
+          Houve queda de energia e voltou.
+        </label>
+        <label>
+          <input type="checkbox" id="chkBaixa" onclick="handleCondicoes()" />
+          Energia está em abaixa.
+        </label>
+        <label>
+          <input type="checkbox" id="chkSemQueda" onclick="handleCondicoes()" />
+          Não houve queda de energia.
+        </label>
+      </div>
+    </div>
+
+    <!-- Pergunta do bastidor, exibida se "Houve queda" ou "Não houve queda" -->
+    <div id="bastidorQuestion" class="form-group">
+      <div style="font-weight: bold; margin-bottom: 5px;">
+        Bastidor tem energia? Equipamentos ligados?
+      </div>
+      <div class="opcoes-bastidor">
+        <label>
+          <input type="radio" name="bastidor" value="Sim" onclick="handleBastidor(this.value)" />
+          Sim
+        </label>
+        <label>
+          <input type="radio" name="bastidor" value="Não" onclick="handleBastidor(this.value)" />
+          Não
+        </label>
+      </div>
+    </div>
+
+    <!-- Mensagem em vermelho para "Energia está em abaixa" -->
+    <div id="baixaMessage"></div>
+
+    <!-- Mensagem em vermelho para passos do bastidor -->
+    <div id="bastidorMessage"></div>
+  </div>
+
+  <script>
+    function handleCondicoes() {
+      const chkQueda = document.getElementById("chkQueda");
+      const chkBaixa = document.getElementById("chkBaixa");
+      const chkSemQueda = document.getElementById("chkSemQueda");
+
+      // Simular "radio" entre checkboxes: ao marcar um, desmarca os outros
+      if (chkQueda.checked) {
+        chkBaixa.checked = false;
+        chkSemQueda.checked = false;
+      } else if (chkBaixa.checked) {
+        chkQueda.checked = false;
+        chkSemQueda.checked = false;
+      } else if (chkSemQueda.checked) {
+        chkQueda.checked = false;
+        chkBaixa.checked = false;
+      }
+
+      // Esconde as mensagens e a pergunta do bastidor
+      document.getElementById("baixaMessage").style.display = "none";
+      document.getElementById("bastidorMessage").style.display = "none";
+      document.getElementById("bastidorQuestion").style.display = "none";
+      // limpa radios
+      document.querySelectorAll('input[name="bastidor"]').forEach(r => r.checked = false);
+
+      // Se "Energia está em abaixa", mostra mensagem em vermelho
+      if (chkBaixa.checked) {
+        const baixaMsg = document.getElementById("baixaMessage");
+        baixaMsg.style.display = "block";
+        baixaMsg.textContent = "Orientar utilizador para contactar manutenção de loja.";
+      }
+      // Se "Houve queda" ou "Não houve queda", exibe a pergunta do bastidor
+      else if (chkQueda.checked || chkSemQueda.checked) {
+        document.getElementById("bastidorQuestion").style.display = "block";
+      }
+    }
+
+    function handleBastidor(value) {
+      const bastidorMsg = document.getElementById("bastidorMessage");
+      bastidorMsg.style.display = "block";
+
+      if (value === "Sim") {
+        bastidorMsg.textContent =
+`Passo 1: Realizar ping ao router e monitorizar a resposta (ping 10.x.x.254 -t) aguardar 5 a 10 minutos
+Passo 2: Se o roteador permanecer offline, direcionar ticket à ALTICE.`;
+        } else {
+            bastidorMsg.innerHTML = 
+`Passo 1: Seguir KB: <a href="https://jmartins.sharepoint.com/sites/SoftinsaContractManagement/_layouts/OneNote.aspx?id=%2Fsites%2FSoftinsaContractManagement%2FDocumentos%20Partilhados%2FShared%20Folder%2FJM%20Helpdesk%2FKnowledge%20Base%2FKB_Hardware&wd=target%28Outros.one%7CC8B98CDE-B18B-4592-95A1-33B28EE07847%2FBASTIDOR%20-%20Encaminhamento%20de%20problemas%20com%20bastidores%7C7207E238-3484-4EF5-9C1C-6C0D2CBE58BA%2F%29" target="_blank">BASTIDOR - Encaminhamento de problemas</a>
+Passo 2: Se o bastidor permanecer sem energia e disjuntores ligados, contactar manutenção elétrica.`;
+        }
+
+    }
+  </script>
+</body>
+</html>

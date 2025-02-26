@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script defer src="../assets/script.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>POS</h1>
+    <button onclick="window.history.back()">Voltar</button>
+    
+    <div id="POS" class="section">
+      <div class="form-group">
+        <label for="ean">Descrição dos artigos:</label>
+        <textarea id="ean" placeholder="Descrever os artigos com os EANs respectivos"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="mensagemErroPOS">Mensagem de erro:</label>
+        <input type="text" id="mensagemErroPOS" placeholder="Descrever erro que aparece/acontece">
+      </div>
+      <div class="form-group">
+        <label for="POS_1">POS</label>
+        <input type="text" id="POS_1" placeholder="Inserir número do POS">
+      </div>
+      <div class="form-group">
+        <label for="codTrans">Número da transação:</label>
+        <input type="text" id="codTrans" placeholder="Inserir número da Transação">
+      </div>
+      <div class="form-group">
+        <label for="dataHoraOcorrencia1">Data e hora da ocorrência:</label>
+        <input type="datetime-local" id="dataHoraOcorrencia1">
+      </div>
+    </div>
+    
+    <button class="botao-copiar" id="copy-pos" onclick="copyDataPOS()">Copiar Dados POS</button>
+  </div>
+  
+  <script>
+    function copyDataPOS() {
+      let output = "";
+      
+      const descricao = document.getElementById("ean").value.trim();
+      if (descricao !== "") {
+        output += "Descrição dos artigos: " + descricao + "\n";
+      }
+      
+      const mensagemErro = document.getElementById("mensagemErroPOS").value.trim();
+      if (mensagemErro !== "") {
+        output += "Mensagem de erro: " + mensagemErro + "\n";
+      }
+      
+      const posNumber = document.getElementById("POS_1").value.trim();
+      if (posNumber !== "") {
+        output += "POS: " + posNumber + "\n";
+      }
+      
+      const codTrans = document.getElementById("codTrans").value.trim();
+      if (codTrans !== "") {
+        output += "Número da transação: " + codTrans + "\n";
+      }
+      
+      const dataHora = document.getElementById("dataHoraOcorrencia1").value.trim();
+      if (dataHora !== "") {
+        output += "Data e hora da ocorrência: " + dataHora + "\n";
+      }
+      
+      if (output.trim() === "Seção: POS") {
+        alert("Nenhum dado foi preenchido!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Dados de POS copiados com sucesso!"))
+        .catch(err => console.error("Erro ao copiar os dados: ", err));
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        if (window.location.hash === "#sectionSelection") {
+        // Oculta o formulário inicial e exibe a parte de escolha de secção
+        document.getElementById("initialForm").style.display = "none";
+        document.getElementById("sectionSelection").style.display = "block";
+        }
+    });
+
+  </script>
+</body>
+</html>
