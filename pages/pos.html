@@ -28,6 +28,17 @@
         <input type="text" id="POS_1" placeholder="Inserir número do POS">
       </div>
       <div class="form-group">
+        <label>Esta a acontece em mais de um POS?</label>
+        <div class="opcoes-radio">
+          <label>
+            <input type="radio" name="multiPOS" value="Sim"> Sim
+          </label>
+          <label>
+            <input type="radio" name="multiPOS" value="Não"> Não
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="codTrans">Número da transação:</label>
         <input type="text" id="codTrans" placeholder="Inserir número da Transação">
       </div>
@@ -58,6 +69,11 @@
       const posNumber = document.getElementById("POS_1").value.trim();
       if (posNumber !== "") {
         output += "POS: " + posNumber + "\n";
+      }
+
+      const multiPOS = document.querySelector('input[name="multiPOS"]:checked');
+      if (multiPOS) {
+        output += "Esta a acontece em mais de um POS? " + multiPOS.value + "\n";
       }
       
       const codTrans = document.getElementById("codTrans").value.trim();
