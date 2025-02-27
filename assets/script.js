@@ -48,15 +48,27 @@ function copyData(sectionId) {
     });
 }
 
-function clearAllData() {
-  // Seleciona todos os inputs de texto e textareas e zera o valor
-  document.querySelectorAll('input[type="text"], textarea').forEach(input => {
-    input.value = "";
-  });
-
-  // Se houver checkboxes ou radios, desmarque-os
-  document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
-    input.checked = false;
-  });
+// Exemplo de função global no script.js
+function goToInitialScreen() {
+  // Verifica se a página atual é o index
+  if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
+    // Se for o index, limpe os campos
+    let nome = document.getElementById("nome");
+    let contacto = document.getElementById("contacto");
+    let problema = document.getElementById("dados_problema");
+    if (nome) nome.value = "";
+    if (contacto) contacto.value = "";
+    if (problema) problema.value = "";
+    
+    // Seções que possam ter sido exibidas
+    let sectionSelection = document.getElementById("sectionSelection");
+    let copiedData = document.getElementById("copiedData");
+    if (sectionSelection) sectionSelection.style.display = "none";
+    if (copiedData) copiedData.style.display = "none";
+    
+  } else {
+    // Se não for o index, redireciona para lá
+    window.location.href = "../index.html"; // ajuste o caminho se necessário
+  }
 }
 
