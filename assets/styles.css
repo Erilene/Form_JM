@@ -73,4 +73,19 @@ html {
     color: #777;
     border-top: 1px solid #ccc;
   }
+
+#globalClearButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #FFD700;
+  color: #000;
+  font-weight: bold;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1000; /* garante que fique acima de outros elementos */
+}
+
   
