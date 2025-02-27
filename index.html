@@ -97,6 +97,22 @@
             });
         }
 
+        function clearInitialData() {
+          document.getElementById("nome").value = "";
+          document.getElementById("contacto").value = "";
+          document.getElementById("dados_problema").value = "";
+          document.getElementById("sectionSelection").style.display = "none";
+          document.getElementById("copiedData").style.display = "none";
+          }
+      
+          function goToInitialScreen() {
+              if (window.location.pathname.endsWith("index.html") || window.location.pathname === "/") {
+                  clearInitialData();
+              } else {
+                  window.location.href = "../index.html"; // ou use caminho absoluto se necessário
+              }
+          }
+
         function toggleWarningBox() {
             let warningBox = document.getElementById("warningBox");
             warningBox.style.display = warningBox.style.display === "none" || warningBox.style.display === "" ? "block" : "none";
