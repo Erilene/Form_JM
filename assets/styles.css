@@ -62,7 +62,7 @@ html {
   
   /* Rodapé fixo ao fundo da página usando pseudo-elemento */
   body::after {
-    content: "Erilene Lopes © 2024/2025";
+    content: "Erilene Lopes © 2025";
     position: absolute;
     bottom: 0;
     left: 0;
