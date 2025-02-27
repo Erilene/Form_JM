@@ -47,3 +47,16 @@ function copyData(sectionId) {
         alert("Erro ao copiar: " + err);
     });
 }
+
+function clearAllData() {
+  // Seleciona todos os inputs de texto e textareas e zera o valor
+  document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+    input.value = "";
+  });
+
+  // Se houver checkboxes ou radios, desmarque-os
+  document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+    input.checked = false;
+  });
+}
+
