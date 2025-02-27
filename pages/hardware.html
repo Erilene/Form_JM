@@ -46,6 +46,7 @@
     </div>
     
     <button class="botao-copiar" id="copy-hardware" onclick="copyDataHardware()">Copiar Dados Hardware</button>
+    <button id="globalClearButton" onclick="clearAllData()">Apagar Dados</button>
   </div>
   
   <script>
@@ -102,8 +103,5 @@
         .catch(err => console.error("Erro ao copiar os dados: ", err));
     }
   </script>
-  <!-- Botão global de apagar dados -->
-  <button id="globalClearButton" onclick="clearAllData()">Apagar Dados</button>
-
 </body>
 </html>
